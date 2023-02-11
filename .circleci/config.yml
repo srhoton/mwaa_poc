@@ -9,5 +9,16 @@ jobs:
       - aws-cli/setup:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_REGION
+            init-aws-region: AWS_REGION
+  init-and-plan:
+    docker: 
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps: 
+      - checkout
+      - run: 
+          name: terraform init and plan
+          command: | 
+            cd infrastructure
+            terraform init -input=false
+            terraform plan
 workflows: 
