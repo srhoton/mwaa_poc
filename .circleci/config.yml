@@ -22,3 +22,9 @@ jobs:
             terraform init -input=false
             terraform plan
 workflows: 
+  on-merge:
+    jobs: 
+      - aws-cli-cred-setup:
+          filters: 
+            branches: 
+              only: main
