@@ -51,3 +51,9 @@ workflows:
           filters: 
             branches: 
               only: main
+      - apply-test:
+          requires:
+            - init-and-plan-test
+          filters: 
+            branches: 
+              only: main
