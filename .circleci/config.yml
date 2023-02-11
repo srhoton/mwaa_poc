@@ -25,8 +25,8 @@ jobs:
           name: terraform init and plan
           command: | 
             cd infrastructure
-            terraform init -input=false -auto-approve -var-file=test.tfvars
-            terraform plan
+            terraform init -input=false 
+            terraform plan -input=false -auto-approve -var-file=test.tfvars
   apply-test:
     docker: 
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
