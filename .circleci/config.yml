@@ -29,6 +29,8 @@ workflows:
             branches: 
               only: main
       - init-and-plan:
+          requires:
+            - aws-cli-cred-setup
           filters: 
             branches: 
               only: main
