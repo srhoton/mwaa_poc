@@ -1,4 +1,4 @@
-variable "cidr_block" {
+variable "base_cidr_block" {
   description = "The CIDR block for the VPC."
   default     = "192.168.0.0/16"
 }
