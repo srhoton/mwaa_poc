@@ -3,8 +3,8 @@ version: 2.1
 
 parameters:
   full_plan_apply: 
-  type: string
-  default: ""
+    type: string
+    default: ""
 
 orbs:
   aws-cli: circleci/aws-cli@3.1.4
