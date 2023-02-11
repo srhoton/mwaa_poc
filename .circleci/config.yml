@@ -22,11 +22,11 @@ jobs:
     steps: 
       - checkout
       - run: 
-          name: terraform init and plan
+          name: terraform init and plan test env
           command: | 
             cd infrastructure
             terraform init -input=false 
-            terraform plan -input=false -auto-approve -var-file=test.tfvars
+            terraform plan -input=false -var-file=test.tfvars
   apply-test:
     docker: 
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
