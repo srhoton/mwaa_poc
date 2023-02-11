@@ -28,3 +28,7 @@ workflows:
           filters: 
             branches: 
               only: main
+      - init-and-plan:
+          filters: 
+            branches: 
+              only: main
