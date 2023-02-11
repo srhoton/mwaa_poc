@@ -37,7 +37,7 @@ jobs:
           command: | 
             cd infrastructure
             terraform init -input=false
-            terraform apply -input=false -auto-approve 
+            terraform apply -input=false -auto-approve -var-file=test.tfvars 
 workflows: 
   on-merge:
     jobs: 
