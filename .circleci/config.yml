@@ -16,7 +16,7 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_REGION
-  init-and-plan:
+  init-and-plan-test:
     docker: 
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
     steps: 
@@ -25,9 +25,9 @@ jobs:
           name: terraform init and plan
           command: | 
             cd infrastructure
-            terraform init -input=false
+            terraform init -input=false -auto-approve -var-file=test.tfvars
             terraform plan
-  full-apply:
+  apply-test:
     docker: 
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
     steps: 
@@ -46,15 +46,6 @@ workflows:
             branches: 
               only: main
       - init-and-plan:
-          requires:
-            - aws-cli-cred-setup
-          filters: 
-            branches: 
-              only: main
-  manual-full-apply:
-    when: << pipeline.parameters.full_plan_apply >>
-    jobs:
-      - full-apply:
           requires:
             - aws-cli-cred-setup
           filters: 
