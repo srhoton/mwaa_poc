@@ -1,5 +1,11 @@
 version: 2.1
 
+
+parameters:
+  full_plan_apply: 
+    type: string
+    default: ""
+
 orbs:
   aws-cli: circleci/aws-cli@3.1.4
 jobs:
@@ -21,6 +27,17 @@ jobs:
             cd infrastructure
             terraform init -input=false
             terraform plan
+  full-apply:
+    docker: 
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps: 
+      - checkout
+      - run: 
+          name: terraform manually do full apply
+          command: | 
+            cd infrastructure
+            terraform init -input=false
+            terraform apply -input=false -auto-approve 
 workflows: 
   on-merge:
     jobs: 
@@ -34,3 +51,7 @@ workflows:
           filters: 
             branches: 
               only: main
+  manual-full-apply:
+    when: << pipeline.parameters.full_plan_apply >>
+    jobs:
+      - full-apply 
