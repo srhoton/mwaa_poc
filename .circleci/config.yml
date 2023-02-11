@@ -54,4 +54,9 @@ workflows:
   manual-full-apply:
     when: << pipeline.parameters.full_plan_apply >>
     jobs:
-      - full-apply 
+      - full-apply:
+          requires:
+            - aws-cli-cred-setup
+          filters: 
+            branches: 
+              only: main
