@@ -43,7 +43,7 @@ jobs:
       - persist_to_workspace:
           root: /tmp/workspace
           paths: 
-            - /tmp/workspace/env_vars
+            - env_vars
   update-dags-test:
     executor: aws-cli/default
     steps: 
@@ -71,6 +71,12 @@ workflows:
       - apply-test:
           requires:
             - init-and-plan-test
+          filters: 
+            branches: 
+              only: main
+      - update-dags-test:
+          requires:
+            - apply-test
           filters: 
             branches: 
               only: main
