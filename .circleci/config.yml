@@ -38,6 +38,23 @@ jobs:
             cd infrastructure
             terraform init -input=false
             terraform apply -input=false -auto-approve -var-file=test.tfvars 
+            echo "S3_BUCKET=`terraform output s3_bucket_name | sed s/\\"//g`" > /tmp/workspace/env_vars
+            echo "S3_DAG_PATH=`terraform output s3_dag_name | sed s/\\"//g`" >> /tmp/workspace/env_vars
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths: 
+            - /tmp/workspace/env_vars
+  update-dags-test:
+    executor: aws-cli/default
+    steps: 
+      - checkout
+      - aws-cli/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-region: AWS_REGION
+      - run: >-
+          echo "Hello from AWS"
+
 workflows: 
   on-merge:
     jobs: 
