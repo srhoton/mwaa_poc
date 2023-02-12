@@ -42,7 +42,7 @@ jobs:
             pwd
             mkdir -p /tmp/workspace
             echo "S3_BUCKET=`terraform output s3_bucket_name | sed s/\\"//g`" > /tmp/workspace/env_vars
-            echo "S3_DAG_PATH=`terraform output s3_dag_name | sed s/\\"//g`" >> /tmp/workspace/env_vars
+            echo "S3_DAG_PATH=`terraform output s3_dag_path | sed s/\\"//g`" >> /tmp/workspace/env_vars
       - persist_to_workspace:
           root: /tmp/workspace
           paths: 
