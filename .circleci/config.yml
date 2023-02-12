@@ -138,3 +138,39 @@ workflows:
           filters: 
             branches: 
               only: main
+  on-tag:
+    jobs: 
+      - aws-cli-cred-setup:
+          filters: 
+            tags:
+              only: 
+                - /^v.*/
+            branches: 
+              ignore: /.*/
+      - init-and-plan-test:
+          requires:
+            - aws-cli-cred-setup
+          filters: 
+            tags:
+              only: 
+                - /^v.*/
+            branches: 
+              ignore: /.*/
+      - apply-test:
+          requires:
+            - init-and-plan-test
+          filters: 
+            tags:
+              only: 
+                - /^v.*/
+            branches: 
+              ignore: /.*/
+      - update-dags-test:
+          requires:
+            - apply-test
+          filters: 
+            tags:
+              only: 
+                - /^v.*/
+            branches: 
+              ignore: /.*/
