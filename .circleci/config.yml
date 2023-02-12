@@ -40,10 +40,11 @@ jobs:
             terraform apply -input=false -auto-approve -var-file=test.tfvars 
             ls -l
             pwd
-            echo "S3_BUCKET=`terraform output s3_bucket_name | sed s/\\"//g`" > workspace/env_vars
-            echo "S3_DAG_PATH=`terraform output s3_dag_name | sed s/\\"//g`" >> workspace/env_vars
+            mkdir -p /tmp/workspace
+            echo "S3_BUCKET=`terraform output s3_bucket_name | sed s/\\"//g`" > /tmp/workspace/env_vars
+            echo "S3_DAG_PATH=`terraform output s3_dag_name | sed s/\\"//g`" >> /tmp/workspace/env_vars
       - persist_to_workspace:
-          root: workspace
+          root: /tmp/workspace
           paths: 
             - env_vars
   update-dags-test:
