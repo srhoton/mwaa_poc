@@ -147,7 +147,7 @@ workflows:
                 - /^v.*/
             branches: 
               ignore: /.*/
-      - init-and-plan-test:
+      - init-and-plan-prod:
           requires:
             - aws-cli-cred-setup
           filters: 
@@ -156,18 +156,18 @@ workflows:
                 - /^v.*/
             branches: 
               ignore: /.*/
-      - apply-test:
+      - apply-prod:
           requires:
-            - init-and-plan-test
+            - init-and-plan-prod
           filters: 
             tags:
               only: 
                 - /^v.*/
             branches: 
               ignore: /.*/
-      - update-dags-test:
+      - update-dags-prod:
           requires:
-            - apply-test
+            - apply-prod
           filters: 
             tags:
               only: 
