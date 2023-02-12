@@ -38,10 +38,12 @@ jobs:
             cd infrastructure
             terraform init -input=false
             terraform apply -input=false -auto-approve -var-file=test.tfvars 
-            echo "S3_BUCKET=`terraform output s3_bucket_name | sed s/\\"//g`" > /tmp/workspace/env_vars
-            echo "S3_DAG_PATH=`terraform output s3_dag_name | sed s/\\"//g`" >> /tmp/workspace/env_vars
+            ls -l
+            pwd
+            echo "S3_BUCKET=`terraform output s3_bucket_name | sed s/\\"//g`" > workspace/env_vars
+            echo "S3_DAG_PATH=`terraform output s3_dag_name | sed s/\\"//g`" >> workspace/env_vars
       - persist_to_workspace:
-          root: /tmp/workspace
+          root: workspace
           paths: 
             - env_vars
   update-dags-test:
