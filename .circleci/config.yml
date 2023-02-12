@@ -64,7 +64,54 @@ jobs:
             echo "DAG: $S3_DAG_PATH"
             aws s3 cp requirements.txt s3://$S3_BUCKET/
             aws s3 cp dags s3://$S3_BUCKET/$S3_DAG_PATH --recursive
-
+  init-and-plan-prod:
+    docker: 
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps: 
+      - checkout
+      - run: 
+          name: terraform init and plan prod env
+          command: | 
+            cd infrastructure
+            terraform init -input=false 
+            terraform plan -input=false -var-file=prod.tfvars
+  apply-prod:
+    docker: 
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps: 
+      - checkout
+      - run: 
+          name: terraform apply prod env
+          command: | 
+            cd infrastructure
+            terraform init -input=false
+            terraform apply -input=false -auto-approve -var-file=prod.tfvars 
+            mkdir -p /tmp/workspace
+            echo "S3_BUCKET=`terraform output s3_bucket_name | sed s/\\"//g`" > /tmp/workspace/env_vars
+            echo "S3_DAG_PATH=`terraform output s3_dag_path | sed s/\\"//g`" >> /tmp/workspace/env_vars
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths: 
+            - env_vars
+  update-dags-prod:
+    executor: aws-cli/default
+    steps: 
+      - checkout
+      - aws-cli/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-region: AWS_REGION
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Copy DAGs to S3
+          command: |
+            echo "Hello from AWS"
+            source /tmp/workspace/env_vars
+            echo "S3: $S3_BUCKET"
+            echo "DAG: $S3_DAG_PATH"
+            aws s3 cp requirements.txt s3://$S3_BUCKET/
+            aws s3 cp dags s3://$S3_BUCKET/$S3_DAG_PATH --recursive
 
 workflows: 
   on-merge:
