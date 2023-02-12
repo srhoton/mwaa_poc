@@ -57,11 +57,13 @@ jobs:
           aws-region: AWS_REGION
       - attach_workspace:
           at: /tmp/workspace
-      - run: >-
-          echo "Hello from AWS"
-          source /tmp/workspace/env_vars
-          echo "S3: $S3_BUCKET"
-          echo "DAG: $S3_DAG_PATH"
+      - run:
+          name: Copy DAGs to S3
+          command: |
+            echo "Hello from AWS"
+            source /tmp/workspace/env_vars
+            echo "S3: $S3_BUCKET"
+            echo "DAG: $S3_DAG_PATH"
 
 workflows: 
   on-merge:
