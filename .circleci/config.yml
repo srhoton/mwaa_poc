@@ -55,8 +55,13 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_REGION
+      - attach_workspace:
+          at: /tmp/workspace
       - run: >-
           echo "Hello from AWS"
+          source /tmp/workspace/env_vars
+          echo "S3: $S3_BUCKET"
+          echo "DAG: $S3_DAG_PATH"
 
 workflows: 
   on-merge:
