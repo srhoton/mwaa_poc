@@ -38,8 +38,6 @@ jobs:
             cd infrastructure
             terraform init -input=false
             terraform apply -input=false -auto-approve -var-file=test.tfvars 
-            ls -l
-            pwd
             mkdir -p /tmp/workspace
             echo "S3_BUCKET=`terraform output s3_bucket_name | sed s/\\"//g`" > /tmp/workspace/env_vars
             echo "S3_DAG_PATH=`terraform output s3_dag_path | sed s/\\"//g`" >> /tmp/workspace/env_vars
@@ -64,6 +62,8 @@ jobs:
             source /tmp/workspace/env_vars
             echo "S3: $S3_BUCKET"
             echo "DAG: $S3_DAG_PATH"
+            aws s3 cp requirements.txt s3://$S3_BUCKET/
+
 
 workflows: 
   on-merge:
