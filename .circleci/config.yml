@@ -63,7 +63,7 @@ jobs:
             echo "S3: $S3_BUCKET"
             echo "DAG: $S3_DAG_PATH"
             aws s3 cp requirements.txt s3://$S3_BUCKET/
-            aws s3 cp dags s3://$S3_BUCKET/$S3_DAG_PATH/
+            aws s3 cp dags s3://$S3_BUCKET/$S3_DAG_PATH --recursive
 
 
 workflows: 
