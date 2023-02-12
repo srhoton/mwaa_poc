@@ -33,7 +33,7 @@ jobs:
     steps: 
       - checkout
       - run: 
-          name: terraform manually do full apply
+          name: terraform apply test env
           command: | 
             cd infrastructure
             terraform init -input=false
